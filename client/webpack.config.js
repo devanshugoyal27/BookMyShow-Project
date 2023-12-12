@@ -1,11 +1,12 @@
 const path = require("path");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+
 module.exports = {
     entry: './src/index.js',
-
     output: {
         path: path.join(__dirname, "dist"),
         filename: "index_bundle.js",
+        publicPath: '/', // Add this line to specify the public URL of the output directory
     },
     devServer: {
         proxy: {
@@ -16,7 +17,6 @@ module.exports = {
             }
         },
     },
-
     module: {
         rules: [
             {
