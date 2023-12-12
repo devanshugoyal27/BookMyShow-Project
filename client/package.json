@@ -6,7 +6,7 @@
   "scripts": {
     "test": "cypress run  --headless --reporter mochawesome",
     "start": "webpack serve --port 3000",
-    "build": "react-scripts build"
+    "build": "webpack --config webpack.config.js"
   },
   "keywords": [],
   "author": "",
