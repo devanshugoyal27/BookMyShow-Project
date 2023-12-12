@@ -103,7 +103,7 @@ const App = () => {
         };
 
         // Make a POST request to the server
-        const response = await fetch("http://localhost:8080/api/booking", {
+        const response = await fetch("https://bookmyshow-project-z75q.onrender.com/api/booking", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -114,7 +114,7 @@ const App = () => {
         if (response.ok) {
           // If the booking is successful, fetch the last booking details
           const lastBookingResponse = await fetch(
-            "http://localhost:8080/api/booking"
+            "https://bookmyshow-project-z75q.onrender.com/api/booking"
           );
           const lastBookingData = await lastBookingResponse.json();
 
