@@ -4,7 +4,7 @@ import "../styles/bootstrap.min.css";
 import { movies, slots, seats } from "./data";
 
 const App = () => {
-   // State for selected movie, slot, and seats
+  // State for selected movie, slot, and seats
   const [selectedMovie, setSelectedMovie] = useState(
     localStorage.getItem("selectedMovie") || null
   );
@@ -38,26 +38,27 @@ const App = () => {
     },
   });
 
-    // Effect to fetch last booking details on component mount
+  // Effect to fetch last booking details on component mount
   useEffect(() => {
     // Load last booking details from localStorage on component mount
     const lastBookingData = JSON.parse(localStorage.getItem("lastBookingData"));
     if (lastBookingData) {
       setBookingData(lastBookingData);
+    } else {
+      // If there are no last booking details, set initial selections
+      setSelectedMovie(localStorage.getItem("selectedMovie") || null);
+      setSelectedSlot(localStorage.getItem("selectedSlot") || null);
+      setSelectedSeats(JSON.parse(localStorage.getItem("selectedSeats")) || []);
     }
-    setSelectedMovie(null);
-    setSelectedSlot(null);
-    setSelectedSeats([]);
-    
   }, []);
 
-    // Handle movie selection
+  // Handle movie selection
   const handleMovieSelect = (movie) => {
     setSelectedMovie(movie);
     localStorage.setItem("selectedMovie", movie);
   };
 
-   // Handle slot selection
+  // Handle slot selection
   const handleSlotSelect = (slot) => {
     setSelectedSlot(slot);
     localStorage.setItem("selectedSlot", slot);
@@ -103,13 +104,16 @@ const App = () => {
         };
 
         // Make a POST request to the server
-        const response = await fetch("https://bookmyshow-project-4ldv.onrender.com/api/booking", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(bookingData),
-        });
+        const response = await fetch(
+          "https://bookmyshow-project-4ldv.onrender.com/api/booking",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(bookingData),
+          }
+        );
 
         if (response.ok) {
           // If the booking is successful, fetch the last booking details
@@ -141,9 +145,13 @@ const App = () => {
           setSelectedMovie(null);
           setSelectedSlot(null);
           setSelectedSeats([]);
+
+          // Clear selections in localStorage after successful booking
+          localStorage.setItem("selectedMovie", null);
+          localStorage.setItem("selectedSlot", null);
+          localStorage.setItem("selectedSeats", JSON.stringify([]));
           alert("Booking Success");
-        } 
-        else {
+        } else {
           alert("Booking failed");
         }
       } else {
