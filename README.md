@@ -43,7 +43,7 @@ Welcome to the BookMyShow project, a sophisticated web application facilitating 
    
 2. Set up the MongoDB connection:
 
-- Create a MongoDB database for the BookMyShow project and Write the connection string.
+- Create a MongoDB database for the BookMyShow project and copy the connection string.
 
 3. Configure the .env:
 
