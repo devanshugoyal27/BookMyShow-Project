@@ -54,35 +54,40 @@ const App = () => {
 
   // Handle movie selection
   const handleMovieSelect = (movie) => {
-    setSelectedMovie(movie);
-    localStorage.setItem("selectedMovie", movie);
+    setSelectedMovie(prevMovie => (prevMovie === movie ? null : movie));
+    localStorage.setItem("selectedMovie", selectedMovie === movie ? null : movie);
   };
 
   // Handle slot selection
   const handleSlotSelect = (slot) => {
-    setSelectedSlot(slot);
-    localStorage.setItem("selectedSlot", slot);
+    setSelectedSlot(prevSlot => (prevSlot === slot ? null : slot));
+  localStorage.setItem("selectedSlot", selectedSlot === slot ? null : slot);
   };
 
   // Handle seat selection
-  const handleSeatSelect = (seat, quantity) => {
-    // Check if the seat is already selected
-    const existingSeatIndex = selectedSeats.findIndex(
-      (selectedSeat) => selectedSeat.seat === seat
-    );
+  // Handle seat selection
+// Handle seat selection
+const handleSeatSelect = (seat, quantity) => {
+  // Check if the seat is already selected
+  const existingSeatIndex = selectedSeats.findIndex(
+    (selectedSeat) => selectedSeat.seat === seat
+  );
 
+  // Toggle selection
+  if (existingSeatIndex === -1) {
     // If the seat is not already selected, add it to the selectedSeats array
-    if (existingSeatIndex === -1) {
-      setSelectedSeats([...selectedSeats, { seat, quantity }]);
-    } else {
-      // If the seat is already selected, update its quantity
-      const updatedSeats = [...selectedSeats];
-      updatedSeats[existingSeatIndex].quantity = quantity;
-      setSelectedSeats(updatedSeats);
-    }
-    // Save selected seats to localStorage
-    localStorage.setItem("selectedSeats", JSON.stringify(selectedSeats));
-  };
+    setSelectedSeats([...selectedSeats, { seat, quantity }]);
+  } else {
+    // If the seat is already selected, remove it from the selectedSeats array
+    const updatedSeats = selectedSeats.filter(
+      (selectedSeat) => selectedSeat.seat !== seat
+    );
+    setSelectedSeats(updatedSeats);
+  }
+
+  // Save selected seats to localStorage using the updated state directly
+  localStorage.setItem("selectedSeats", JSON.stringify([...selectedSeats, { seat, quantity }]));
+};
 
   // Handle the booking process
   const handleBookNow = async () => {
